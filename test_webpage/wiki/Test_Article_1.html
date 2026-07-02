@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>Radio Access Network Test Procedures – LTE-5G-Wiki</title>
+<meta name="viewport" content="width=1000"/>
+<link rel="stylesheet" href="wiki.css"/>
+</head>
+<body>
+<div id="page-wrapper">
+  <header id="site-header">
+    <button id="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+    <a id="header-logo" href="Main_Page.html">
+      <img class="icon" src="../w/images/econ50x50.svg" alt="" onerror="this.style.display='none'">
+      <img class="wordmark" src="../w/images/Sitename.png" alt="LTE-5G-Wiki" onerror="this.outerHTML='<span style=\'font-size:1.2em;font-weight:bold;color:#202122\'>LTE-5G Wiki</span>'">
+    </a>
+    <form id="search-form" onsubmit="doSearch(event)">
+      <input type="search" id="header-search-input" placeholder="Search LTE-5G-Wiki">
+      <button type="submit">Go</button>
+    </form>
+    <div id="user-area">
+      <a href="#" id="username-link">Eherjin</a>
+      <a href="#" class="user-icon-btn">🔔</a>
+      <a href="#" class="user-icon-btn">📋</a>
+      <a href="#" class="user-icon-btn">⭐</a>
+      <button id="user-dropdown-btn" onclick="toggleUserMenu()">👤</button>
+    </div>
+    <div id="user-dropdown">
+      <ul>
+        <li><a href="#">Eherjin</a></li><li><a href="#">Talk</a></li>
+        <li><a href="#">Preferences</a></li><li><a href="#">Watchlist</a></li>
+        <li><a href="#">Contributions</a></li>
+        <li class="logout"><a href="#">Log out</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div id="body-row">
+    <nav id="sidebar">
+      <div class="nav-section">
+        <div class="nav-heading">Navigation</div>
+        <ul class="nav-links">
+          <li><a href="Main_Page.html">Main Page</a></li>
+          <li><a href="#">Recent changes</a></li>
+          <li><a href="#">Random page</a></li>
+          <li><a href="#">Help</a></li>
+          <li><a href="#">Dictionary</a></li>
+        </ul>
+        <div class="switch-look"><a href="#">Switch to old look</a></div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-heading">Organizations</div>
+        <ul class="nav-links">
+          <li><a href="#">Product Development Baseband</a></li>
+          <li><a href="#">Product Development Traffic Control</a></li>
+          <li><a href="#">RAN Systems Management</a></li>
+          <li><a href="#">Product Integration &amp; Relese</a></li>
+          <li><a href="#">Product Line Maintenance</a></li>
+          <li><a href="#">Baseband Infrastructure</a></li>
+          <li><a href="#">DSI</a></li>
+          <li><a href="#">Customer Adaptation</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-heading">Tools</div>
+        <ul class="nav-links">
+          <li><a href="#">What links here</a></li>
+          <li><a href="#">Related changes</a></li>
+          <li><a href="javascript:print();">Printable version</a></li>
+          <li><a href="#">Permanent link</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="main-col">
+      <div id="site-notice">
+        <table class="notice-table">
+          <tr>
+            <td class="notice-img"><img src="../w/img_auth.php/thumb/c/c7/Information_icon4.png/40px-Information_icon4.png" width="40" height="40" alt=""></td>
+            <td class="notice-text"><b>Known Issues:</b> Please read our <a href="#">Known Issues</a> for tips on how to resolve current issues.</td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="content-area">
+        <p style="font-size:.85em;color:#54595d;margin-bottom:6px;">&#8592; <a href="search_test.html">Back to search results for "test"</a></p>
+        <h1 id="page-title">Radio Access Network Test Procedures</h1>
+        <div class="meta-row">
+          <span>From LTE-5G-Wiki</span>
+          <span>Last edited: 09:15, 14 March 2023 &nbsp;|&nbsp; 4 KB (412 words)</span>
+        </div>
+        <div id="article-tabs">
+          <ul class="tab-list">
+            <li class="active"><a href="#">Article</a></li>
+            <li><a href="#">Discussion</a></li>
+          </ul>
+          <ul class="tab-list">
+            <li class="active"><a href="#">Read</a></li>
+            <li><a href="#">View source</a></li>
+            <li><a href="#">View history</a></li>
+          </ul>
+        </div>
+        <div id="wiki-content">
+          <p>Radio Access Network (RAN) test procedures are a set of standardized verification steps carried out by system engineers before, during, and after the deployment of base stations in both 4G LTE and 5G NR environments. These procedures ensure that all hardware and software components are functioning within expected parameters and that the network can reliably serve UEs under varying load and coverage conditions. Each test case is assigned a unique identifier and mapped to a specific feature requirement, allowing traceability from the test result back to the original design specification. Engineers executing RAN test procedures are expected to document all pass and fail outcomes in the central reporting tool and escalate any anomalies to the responsible feature team within 24 hours of detection to minimize impact on the overall integration schedule.</p>
+        </div>
+      </div>
+
+      <footer id="site-footer">
+        <span>This page was last edited on 14 March 2023, at 09:15.</span>
+        <ul id="footer-links">
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">About LTE-5G-Wiki</a></li>
+          <li><a href="#">Disclaimers</a></li>
+        </ul>
+        <div id="footer-badge">
+          <a href="https://www.mediawiki.org/" target="_blank">
+            <img src="../w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31">
+          </a>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+<script>
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+var _um=false;
+function toggleUserMenu() { _um=!_um; document.getElementById('user-dropdown').classList.toggle('open',_um); }
+document.addEventListener('click',function(e){ if(!e.target.closest('#user-dropdown-btn')&&!e.target.closest('#user-dropdown')){ _um=false; document.getElementById('user-dropdown').classList.remove('open'); }});
+function doSearch(e) { e.preventDefault(); var q=document.getElementById('header-search-input').value.trim().toLowerCase(); if(q==='test') window.location.href='search_test.html'; else alert('No results found for "'+q+'"'); }
+</script>
+</body>
+</html>

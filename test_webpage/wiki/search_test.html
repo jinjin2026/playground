@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>Search results – LTE-5G-Wiki</title>
+<meta name="viewport" content="width=1000"/>
+<link rel="stylesheet" href="wiki.css"/>
+<style>
+#search-results-title { font-size: 1.95em; font-family: 'Linux Libertine', Georgia, Times, serif; font-weight: normal; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: baseline; }
+#inner-search-form { display: flex; align-items: center; gap: 8px; max-width: 700px; margin-bottom: 12px; }
+#inner-search-input { flex: 1; border: 1px solid #a2a9b1; border-radius: 2px; padding: 6px 10px; font-size: 14px; outline: none; }
+#inner-search-input:focus { border-color: #3366cc; }
+#search-btn { background: #3366cc; color: #fff; border: none; border-radius: 2px; padding: 6px 16px; font-size: 14px; cursor: pointer; }
+#search-btn:hover { background: #2a4db5; }
+#filter-tabs { border-bottom: 1px solid #a2a9b1; margin-bottom: 14px; }
+#filter-tabs ul { display: flex; list-style: none; padding: 0; margin: 0; }
+#filter-tabs ul li a { display: block; padding: 6px 12px; font-size: .875em; color: #3366cc; border-bottom: 2px solid transparent; }
+#filter-tabs ul li a:hover { border-bottom-color: #3366cc; text-decoration: none; }
+#filter-tabs ul li.active a { color: #202122; border-bottom: 2px solid #3366cc; font-weight: 500; }
+.results-count { float: right; font-size: .875em; color: #54595d; margin-top: 2px; }
+.results-section-heading { font-size: 1.2em; font-weight: normal; font-family: 'Linux Libertine', Georgia, Times, serif; border-bottom: 1px solid #a2a9b1; padding-bottom: 4px; margin: 16px 0 12px; clear: both; }
+.search-result { margin-bottom: 18px; }
+.search-result h3 { font-size: 1em; font-weight: normal; margin-bottom: 3px; }
+.search-result h3 a { font-size: 1.05em; color: #3366cc; }
+.search-result h3 a:hover { text-decoration: underline; }
+.result-snippet { font-size: .875em; color: #202122; margin-bottom: 3px; line-height: 1.5; }
+.result-snippet b { font-weight: bold; }
+.result-meta { font-size: .8em; color: #54595d; }
+</style>
+</head>
+<body>
+<div id="page-wrapper">
+
+  <header id="site-header">
+    <button id="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+    <a id="header-logo" href="Main_Page.html">
+      <img class="icon" src="../w/images/econ50x50.svg" alt="" onerror="this.style.display='none'">
+      <img class="wordmark" src="../w/images/Sitename.png" alt="LTE-5G-Wiki" onerror="this.outerHTML='<span style=\'font-size:1.2em;font-weight:bold;color:#202122\'>LTE-5G Wiki</span>'">
+    </a>
+    <form id="search-form" onsubmit="doSearch(event)">
+      <input type="search" id="header-search-input" placeholder="Search LTE-5G-Wiki" value="test">
+      <button type="submit">Go</button>
+    </form>
+    <div id="user-area">
+      <a href="#" id="username-link">Eherjin</a>
+      <a href="#" class="user-icon-btn">🔔</a>
+      <a href="#" class="user-icon-btn">📋</a>
+      <a href="#" class="user-icon-btn">⭐</a>
+      <button id="user-dropdown-btn" onclick="toggleUserMenu()">👤</button>
+    </div>
+    <div id="user-dropdown">
+      <ul>
+        <li><a href="#">Eherjin</a></li><li><a href="#">Talk</a></li>
+        <li><a href="#">Preferences</a></li><li><a href="#">Watchlist</a></li>
+        <li><a href="#">Contributions</a></li>
+        <li class="logout"><a href="#">Log out</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div id="body-row">
+    <nav id="sidebar">
+      <div class="nav-section">
+        <div class="nav-heading">Navigation</div>
+        <ul class="nav-links">
+          <li><a href="Main_Page.html">Main Page</a></li>
+          <li><a href="#">Recent changes</a></li>
+          <li><a href="#">Random page</a></li>
+          <li><a href="#">Help</a></li>
+          <li><a href="#">Dictionary</a></li>
+        </ul>
+        <div class="switch-look"><a href="#">Switch to old look</a></div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-heading">Organizations</div>
+        <ul class="nav-links">
+          <li><a href="#">Product Development Baseband</a></li>
+          <li><a href="#">Product Development Traffic Control</a></li>
+          <li><a href="#">RAN Systems Management</a></li>
+          <li><a href="#">Product Integration &amp; Relese</a></li>
+          <li><a href="#">Product Line Maintenance</a></li>
+          <li><a href="#">Baseband Infrastructure</a></li>
+          <li><a href="#">DSI</a></li>
+          <li><a href="#">Customer Adaptation</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-heading">Programs</div>
+        <ul class="nav-links">
+          <li><a href="#">RA Customer Operational Efficiency</a></li>
+          <li><a href="#">RA Mobile Broadband</a></li>
+          <li><a href="#">RA Services &amp; Mobility</a></li>
+          <li><a href="#">Baseband CI</a></li>
+          <li><a href="#">Radio SW</a></li>
+          <li><a href="#">IODT</a></li>
+          <li><a href="#">LTE on COTS &amp; G5</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-heading">Areas</div>
+        <ul class="nav-links">
+          <li><a href="#">Design</a></li>
+          <li><a href="#">System</a></li>
+          <li><a href="#">RAN I&amp;V</a></li>
+          <li><a href="#">MBB FV</a></li>
+          <li><a href="#">Systems Management</a></li>
+          <li><a href="#">PD CAT</a></li>
+          <li><a href="#">HW Radio Design</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-heading">Quick Links</div>
+        <ul class="nav-links">
+          <li><a href="#">Guardians &amp; COP</a></li>
+          <li><a href="#">WoW</a></li>
+          <li><a href="#">Trouble Reports</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-heading">Special Projects</div>
+        <ul class="nav-links">
+          <li><a href="#">Verizon 5G Technology Forum</a></li>
+          <li><a href="#">High Band SW</a></li>
+        </ul>
+      </div>
+      <div class="nav-section">
+        <div class="nav-heading">Tools</div>
+        <ul class="nav-links">
+          <li><a href="#">What links here</a></li>
+          <li><a href="#">Related changes</a></li>
+          <li><a href="javascript:print();">Printable version</a></li>
+          <li><a href="#">Permanent link</a></li>
+          <li><a href="#">Page information</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="main-col">
+      <div id="site-notice">
+        <table class="notice-table">
+          <tr>
+            <td class="notice-img"><img src="../w/img_auth.php/thumb/c/c7/Information_icon4.png/40px-Information_icon4.png" width="40" height="40" alt=""></td>
+            <td class="notice-text"><b>Known Issues:</b> Please read our <a href="#">Known Issues</a> for tips on how to resolve current issues.</td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="content-area">
+        <div id="search-results-title">
+          <span>Search results</span>
+          <span style="font-size:0.5em;">&#10067; <a href="#">Help</a></span>
+        </div>
+
+        <form id="inner-search-form" onsubmit="doSearch(event)">
+          <span>&#128269;</span>
+          <input id="inner-search-input" type="text" value="test">
+          <button id="search-btn" type="submit">Search</button>
+        </form>
+
+        <div id="filter-tabs">
+          <ul>
+            <li class="active"><a href="#">Content pages</a></li>
+            <li><a href="#">Multimedia</a></li>
+            <li><a href="#">Everything</a></li>
+            <li><a href="#">Advanced</a></li>
+          </ul>
+        </div>
+
+        <span class="results-count">Results 1 – 3 of 3</span>
+
+        <h2 class="results-section-heading">Page text matches</h2>
+
+        <div class="search-result">
+          <h3><a href="Test_Article_1.html">Radio Access Network Test Procedures</a></h3>
+          <div class="result-snippet">This article describes the standard <b>test</b> procedures used for validating Radio Access Network configurations prior to deployment in live networks.</div>
+          <div class="result-meta">4 KB (412 words) &nbsp;·&nbsp; 09:15, 14 March 2023</div>
+        </div>
+
+        <div class="search-result">
+          <h3><a href="Test_Article_2.html">Baseband Unit Integration Test Guide</a></h3>
+          <div class="result-snippet">The integration <b>test</b> guide covers all baseline verification steps for Baseband Units (BBU) deployed in both indoor and outdoor configurations across 4G and 5G sites.</div>
+          <div class="result-meta">6 KB (631 words) &nbsp;·&nbsp; 17:42, 2 November 2022</div>
+        </div>
+
+        <div class="search-result">
+          <h3><a href="Test_Article_3.html">MR7501: Uplink Throughput Test Failure Analysis</a></h3>
+          <div class="result-snippet">Root cause analysis for uplink throughput <b>test</b> failures observed during regression cycles on MR7501 SP2. Covers scheduler configuration and UE capability mismatch scenarios.</div>
+          <div class="result-meta">9 KB (874 words) &nbsp;·&nbsp; 11:05, 28 June 2023</div>
+        </div>
+
+      </div>
+
+      <footer id="site-footer">
+        <span>Search completed in 0.041 seconds.</span>
+        <ul id="footer-links">
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">About LTE-5G-Wiki</a></li>
+          <li><a href="#">Disclaimers</a></li>
+        </ul>
+        <div id="footer-badge">
+          <a href="https://www.mediawiki.org/" target="_blank">
+            <img src="../w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31">
+          </a>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+<script>
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+var _um = false;
+function toggleUserMenu() { _um=!_um; document.getElementById('user-dropdown').classList.toggle('open',_um); }
+document.addEventListener('click', function(e) { if (!e.target.closest('#user-dropdown-btn') && !e.target.closest('#user-dropdown')) { _um=false; document.getElementById('user-dropdown').classList.remove('open'); } });
+function doSearch(e) {
+  e.preventDefault();
+  var q = (document.getElementById('inner-search-input') || document.getElementById('header-search-input')).value.trim().toLowerCase();
+  if (q === 'test') window.location.href = 'search_test.html';
+  else alert('No results found for "' + q + '"');
+}
+</script>
+</body>
+</html>
