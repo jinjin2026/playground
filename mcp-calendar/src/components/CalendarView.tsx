@@ -40,6 +40,7 @@ export function CalendarView({
   const [current, setCurrent] = useState(() => new Date(initialMonth));
   const [popover, setPopover] = useState<PopoverState | null>(null);
   const today = new Date(initialMonth);
+  const [selectedDate, setSelectedDate] = useState(today);
 
   const cells = buildMonthGrid(current);
   const monthLabel = new Intl.DateTimeFormat("ko-KR", {
@@ -77,7 +78,7 @@ export function CalendarView({
 
   return (
     <div className="flex flex-col gap-6 sm:flex-row">
-      <TodayCard events={eventList} />
+      <TodayCard events={eventList} selectedDate={selectedDate} />
 
       <div className="flex-1 rounded-2xl bg-zinc-900 p-5 shadow-lg">
         <div className="mb-4 flex items-center justify-between">
@@ -125,17 +126,21 @@ export function CalendarView({
                 )
               : [];
             const isToday = date ? isSameDay(date, today) : false;
+            const isSelected = date ? isSameDay(date, selectedDate) : false;
 
             return (
               <div
                 key={index}
-                onClick={(e) =>
-                  date &&
-                  setPopover({ date, anchorRect: e.currentTarget.getBoundingClientRect() })
-                }
+                onClick={(e) => {
+                  if (!date) return;
+                  setSelectedDate(date);
+                  setPopover({ date, anchorRect: e.currentTarget.getBoundingClientRect() });
+                }}
                 className={`flex aspect-square flex-col items-center justify-center gap-0.5 rounded-full text-sm transition ${
                   date ? "cursor-pointer hover:bg-zinc-800" : ""
-                } ${isToday ? "bg-orange-500 font-semibold text-white" : "text-zinc-300"}`}
+                } ${isToday ? "bg-orange-500 font-semibold text-white" : "text-zinc-300"} ${
+                  isSelected && !isToday ? "ring-1 ring-inset ring-emerald-400" : ""
+                }`}
               >
                 {date && (
                   <>
