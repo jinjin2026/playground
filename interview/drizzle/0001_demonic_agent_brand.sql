@@ -1,0 +1,1 @@
+ALTER TABLE `todos` ADD `calendar_event_id` integer;

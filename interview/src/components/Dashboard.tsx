@@ -32,7 +32,7 @@ export function Dashboard({
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="font-heading text-[34px] font-bold tracking-tight text-[#f6f8f7]">
-              아침 대시보드
+              {activeTab === "home" ? "아침 대시보드" : "날씨 대시보드"}
             </h1>
             <p className="mt-1.5 text-[15px] text-white/50">
               {selectedDate.getFullYear()}년 {selectedDate.getMonth() + 1}월{" "}
@@ -43,14 +43,13 @@ export function Dashboard({
         </div>
 
         {activeTab === "home" ? (
-          <HomeView
+          <HomeView date={selectedDate} initialTodos={initialTodos} />
+        ) : (
+          <WeatherView
             date={selectedDate}
-            initialTodos={initialTodos}
             location={location}
             onLocationChange={setLocation}
           />
-        ) : (
-          <WeatherView date={selectedDate} location={location} />
         )}
       </main>
     </div>

@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { todos } from "@/db/schema";
+import {
+  deleteCalendarEvent,
+  todoAllDayRange,
+  updateCalendarEvent,
+} from "@/lib/mcp-calendar-client";
 
 export async function PATCH(
   request: Request,
@@ -38,6 +43,13 @@ export async function PATCH(
     return NextResponse.json({ error: "Todo not found" }, { status: 404 });
   }
 
+  if (content !== undefined && updated.calendarEventId !== null) {
+    await updateCalendarEvent(updated.calendarEventId, {
+      title: `✅ 할 일: ${updated.content}`,
+      ...todoAllDayRange(updated.date),
+    });
+  }
+
   return NextResponse.json(updated);
 }
 
@@ -59,6 +71,10 @@ export async function DELETE(
 
   if (!deleted) {
     return NextResponse.json({ error: "Todo not found" }, { status: 404 });
+  }
+
+  if (deleted.calendarEventId !== null) {
+    await deleteCalendarEvent(deleted.calendarEventId);
   }
 
   return NextResponse.json(deleted);

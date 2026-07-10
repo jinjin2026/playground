@@ -1,0 +1,46 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_MCP_CALENDAR_URL: ${NEXT_PUBLIC_MCP_CALENDAR_URL:-http://localhost:3102}
+    environment:
+      # Server-side calls (mcp-calendar-client.ts) use the compose network
+      # address; the browser-facing NEXT_PUBLIC_ var above stays localhost.
+      MCP_CALENDAR_INTERNAL_URL: "http://mcp-calendar:3000"
+    ports:
+      - "3101:3001"
+    volumes:
+      - sqlite-data:/data
+    depends_on:
+      - mcp-calendar
+    restart: unless-stopped
+
+  mcp:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_MCP_CALENDAR_URL: ${NEXT_PUBLIC_MCP_CALENDAR_URL:-http://localhost:3102}
+    command: ["npm", "run", "mcp"]
+    environment:
+      SKIP_MIGRATIONS: "1"
+      API_BASE_URL: "http://web:3001"
+      MCP_PORT: "3002"
+    ports:
+      - "3103:3002"
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  mcp-calendar:
+    build:
+      context: ../mcp-calendar
+    ports:
+      - "3102:3000"
+    volumes:
+      - mcp-calendar-sqlite-data:/data
+    restart: unless-stopped
+
+volumes:
+  sqlite-data:
+  mcp-calendar-sqlite-data:

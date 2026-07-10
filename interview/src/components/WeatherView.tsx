@@ -5,6 +5,8 @@ import { toDateParam } from "@/lib/date-utils";
 import { describeWeatherCode } from "@/lib/weather";
 import type { ForecastDay, HourlyPoint } from "@/lib/weather";
 import type { SavedLocation } from "./WeatherCard";
+import { LocationSearch } from "./LocationSearch";
+import { NewsHeadline } from "./NewsHeadline";
 import { ForecastStrip } from "./weather/ForecastStrip";
 import { TempTrendChart } from "./weather/TempTrendChart";
 import { StatChart, type StatChartPoint } from "./weather/StatChart";
@@ -32,9 +34,11 @@ type WeatherViewState =
 export function WeatherView({
   date,
   location,
+  onLocationChange,
 }: {
   date: Date;
   location: SavedLocation | null;
+  onLocationChange: (location: SavedLocation) => void;
 }) {
   const [state, setState] = useState<WeatherViewState>({ status: "loading" });
 
@@ -73,20 +77,33 @@ export function WeatherView({
 
   if (!location) {
     return (
-      <div className="flex flex-col rounded-[20px] border border-white/[0.09] bg-white/[0.045] p-6 text-[#eef2f0] shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-        <p className="text-sm text-white/45">
-          위치를 검색해서 저장하면 상세 날씨를 볼 수 있어요.
-        </p>
+      <div className="flex flex-col gap-6">
+        <LocationSearch location={location} onLocationChange={onLocationChange} />
+        <div className="flex flex-col rounded-[20px] border border-white/[0.09] bg-white/[0.045] p-6 text-[#eef2f0] shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+          <p className="text-sm text-white/45">
+            위치를 검색해서 저장하면 상세 날씨를 볼 수 있어요.
+          </p>
+        </div>
       </div>
     );
   }
 
   if (state.status === "loading") {
-    return <p className="text-sm text-white/50">불러오는 중...</p>;
+    return (
+      <div className="flex flex-col gap-6">
+        <LocationSearch location={location} onLocationChange={onLocationChange} />
+        <p className="text-sm text-white/50">불러오는 중...</p>
+      </div>
+    );
   }
 
   if (state.status === "error") {
-    return <p className="text-sm text-red-300">날씨를 불러오지 못했어요.</p>;
+    return (
+      <div className="flex flex-col gap-6">
+        <LocationSearch location={location} onLocationChange={onLocationChange} />
+        <p className="text-sm text-red-300">날씨를 불러오지 못했어요.</p>
+      </div>
+    );
   }
 
   const { current, hourly, forecastDays } = state;
@@ -111,6 +128,8 @@ export function WeatherView({
 
   return (
     <div className="flex flex-col gap-6">
+      <LocationSearch location={location} onLocationChange={onLocationChange} />
+
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
         <div className="flex flex-col justify-center rounded-[20px] border border-white/[0.09] bg-white/[0.045] p-6 text-[#eef2f0] shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl">
           <div className="flex items-center gap-2.5">
@@ -180,6 +199,8 @@ export function WeatherView({
           type="bar"
         />
       </div>
+
+      <NewsHeadline date={date} />
     </div>
   );
 }

@@ -6,6 +6,7 @@ export const todos = sqliteTable("todos", {
   date: text("date").notNull(),
   content: text("content").notNull(),
   done: integer("done", { mode: "boolean" }).notNull().default(false),
+  calendarEventId: integer("calendar_event_id"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(sql`(unixepoch())`),

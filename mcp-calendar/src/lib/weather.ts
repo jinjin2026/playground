@@ -136,7 +136,7 @@ export async function fetchDailyWeather(
 
   const data = await response.json();
   const dateParam = toDateParam(date);
-  const dayIndex: number[] = data?.daily?.time ?? [];
+  const dayIndex: string[] = data?.daily?.time ?? [];
   const selectedIndex = dayIndex.indexOf(dateParam);
   if (selectedIndex === -1) return null;
 

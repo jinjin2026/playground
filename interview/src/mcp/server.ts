@@ -1,5 +1,6 @@
+import { createServer } from "node:http";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { z } from "zod";
 
 const API_BASE_URL = process.env.API_BASE_URL ?? "http://localhost:3001";
@@ -128,8 +129,25 @@ server.registerTool(
 );
 
 async function main() {
-  const transport = new StdioServerTransport();
+  // Stateless: every request is an independent proxy call to the Next.js API,
+  // so there's no server-side session state worth keeping between requests.
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: undefined,
+  });
   await server.connect(transport);
+
+  const port = Number(process.env.MCP_PORT ?? 3002);
+  const httpServer = createServer((req, res) => {
+    if (req.url === "/mcp") {
+      transport.handleRequest(req, res);
+      return;
+    }
+    res.writeHead(404).end();
+  });
+
+  httpServer.listen(port, () => {
+    console.log(`interview MCP server listening on http://localhost:${port}/mcp`);
+  });
 }
 
 main().catch((error) => {
