@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "interview": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["tsx", "${CLAUDE_PROJECT_DIR}/src/mcp/server.ts"],
+      "env": {
+        "API_BASE_URL": "http://localhost:3001"
+      }
+    }
+  }
+}
