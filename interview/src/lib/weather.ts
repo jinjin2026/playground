@@ -148,6 +148,92 @@ export async function fetchDailyWeather(
   };
 }
 
+export type HourlyPoint = {
+  time: string;
+  temperature: number | null;
+  apparentTemperature: number | null;
+  dewPoint: number | null;
+  humidity: number | null;
+  precipitation: number | null;
+  pressure: number | null;
+  windSpeed: number | null;
+  windGusts: number | null;
+};
+
+export type ForecastDay = {
+  date: string;
+  weatherCode: number;
+  temperatureMax: number;
+  temperatureMin: number;
+};
+
+export type WeatherDetail = {
+  hourly: HourlyPoint[];
+  forecastDays: ForecastDay[];
+};
+
+export async function fetchWeatherDetail(
+  latitude: number,
+  longitude: number,
+  date: Date,
+): Promise<WeatherDetail | null> {
+  const dateParam = toDateParam(date);
+  const forecastEnd = new Date(date);
+  forecastEnd.setDate(forecastEnd.getDate() + 4);
+
+  const url = new URL("https://api.open-meteo.com/v1/forecast");
+  url.searchParams.set("latitude", String(latitude));
+  url.searchParams.set("longitude", String(longitude));
+  url.searchParams.set(
+    "hourly",
+    "temperature_2m,apparent_temperature,dew_point_2m,relative_humidity_2m,precipitation,pressure_msl,wind_speed_10m,wind_gusts_10m",
+  );
+  url.searchParams.set(
+    "daily",
+    "weather_code,temperature_2m_max,temperature_2m_min",
+  );
+  url.searchParams.set("timezone", "auto");
+  url.searchParams.set("start_date", dateParam);
+  url.searchParams.set("end_date", toDateParam(forecastEnd));
+
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) return null;
+
+  const data = await response.json();
+
+  const hourlyTimes: string[] = data?.hourly?.time ?? [];
+  const hourly: HourlyPoint[] = hourlyTimes
+    .map((time: string, index: number) => ({
+      time,
+      temperature: data?.hourly?.temperature_2m?.[index] ?? null,
+      apparentTemperature: data?.hourly?.apparent_temperature?.[index] ?? null,
+      dewPoint: data?.hourly?.dew_point_2m?.[index] ?? null,
+      humidity: data?.hourly?.relative_humidity_2m?.[index] ?? null,
+      precipitation: data?.hourly?.precipitation?.[index] ?? null,
+      pressure: data?.hourly?.pressure_msl?.[index] ?? null,
+      windSpeed: data?.hourly?.wind_speed_10m?.[index] ?? null,
+      windGusts: data?.hourly?.wind_gusts_10m?.[index] ?? null,
+    }))
+    .filter((point: HourlyPoint) => point.time.startsWith(dateParam));
+
+  const dailyTimes: string[] = data?.daily?.time ?? [];
+  const forecastDays: ForecastDay[] = dailyTimes
+    .map((date: string, index: number) => ({
+      date,
+      weatherCode: data?.daily?.weather_code?.[index],
+      temperatureMax: data?.daily?.temperature_2m_max?.[index],
+      temperatureMin: data?.daily?.temperature_2m_min?.[index],
+    }))
+    .filter(
+      (day: ForecastDay) =>
+        day.weatherCode !== undefined &&
+        day.temperatureMax !== undefined &&
+        day.temperatureMin !== undefined,
+    );
+
+  return { hourly, forecastDays };
+}
+
 export type AirQuality = { pm25Mean: number | null };
 
 export async function fetchAirQuality(

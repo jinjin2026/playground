@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import type { Todo } from "@/db/schema";
-import { TodoList } from "./TodoList";
-import { ScheduleLinkCard } from "./ScheduleLinkCard";
-import { LocationSearch } from "./LocationSearch";
-import { WeatherCard, type SavedLocation } from "./WeatherCard";
-import { NewsHeadline } from "./NewsHeadline";
+import { HomeView } from "./HomeView";
+import { WeatherView } from "./WeatherView";
+import { type SavedLocation } from "./WeatherCard";
+import { TabNav, type TabKey } from "./TabNav";
 
 export function Dashboard({
   initialTodos,
@@ -19,6 +18,7 @@ export function Dashboard({
 }) {
   const [selectedDate] = useState(() => new Date(`${initialDate}T00:00:00`));
   const [location, setLocation] = useState<SavedLocation | null>(initialLocation);
+  const [activeTab, setActiveTab] = useState<TabKey>("home");
 
   return (
     <div
@@ -29,7 +29,7 @@ export function Dashboard({
       }}
     >
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8">
-        <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="font-heading text-[34px] font-bold tracking-tight text-[#f6f8f7]">
               아침 대시보드
@@ -39,22 +39,19 @@ export function Dashboard({
               {selectedDate.getDate()}일
             </p>
           </div>
-          <div className="whitespace-nowrap rounded-full border border-white/10 px-4 py-2 font-heading text-[13px] font-semibold uppercase tracking-[0.1em] text-white/35">
-            Daily Brief
-          </div>
+          <TabNav active={activeTab} onChange={setActiveTab} />
         </div>
 
-        <div className="grid grid-cols-1 gap-7 lg:grid-cols-[360px_minmax(0,1fr)]">
-          <div className="flex flex-col gap-6">
-            <TodoList date={selectedDate} initialTodos={initialTodos} />
-            <ScheduleLinkCard date={selectedDate} />
-          </div>
-          <div className="flex flex-col gap-6">
-            <LocationSearch location={location} onLocationChange={setLocation} />
-            <WeatherCard date={selectedDate} location={location} />
-            <NewsHeadline date={selectedDate} />
-          </div>
-        </div>
+        {activeTab === "home" ? (
+          <HomeView
+            date={selectedDate}
+            initialTodos={initialTodos}
+            location={location}
+            onLocationChange={setLocation}
+          />
+        ) : (
+          <WeatherView date={selectedDate} location={location} />
+        )}
       </main>
     </div>
   );
